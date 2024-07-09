@@ -11,8 +11,8 @@
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
-| POST | /user/signup | To sign up a new user account |
-| POST | /user/login | To login an existing user account |
+| POST | /signup | To sign up a new user account |
+| POST | /login | To login an existing user account |
 | POST | / | To create a new product|
 | GET | /| To retrieve all products |
 | GET | /:productId | To retrieve details of a single product |
