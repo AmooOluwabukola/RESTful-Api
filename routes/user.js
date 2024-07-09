@@ -79,57 +79,6 @@ router.post('/login', async (req, res) => {
 
 
 
-
-// resetPassword Route
-router.post('/resetpassword', async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  const resetToken = crypto.randomBytes(32).toString('hex');
-  console.log("generated resetToken", resetToken);
-  user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = Date.now() + 3600000; // expires in 1 hour
-  await user.save();
-  console.log("User's resetPassword token saved: ", user.resetPasswordToken);
-  const resetLink = `http://localhost:4000/user/reset?userId=${user._id}&token=${resetToken}`;
-  const mailOptions = {
-    from: 'your_email',
-    to: user.email,
-    subject: 'Reset Password',
-    text: `Reset your password by clicking on this link: ${resetLink} and providing your userId and token`,
-  };
-  sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
-    }
-  });
-  res.json({ message: 'Reset password link sent to your email' });
-});
-
-// reset Password with token
-router.post('/reset', async (req, res) => {
-  const { userId, token, password } = req.body;
-  const user = await User.findOne({ _id: userId });
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-  if (user.resetPasswordToken !== token) {
-    return res.status(401).json({ message: 'Invalid token' });
-  }
-  user.password = password;
-  user.resetPasswordToken = null;
-  user.resetPasswordExpires = null;
-  await user.save();
-  res.json({ message: 'Password reset successfully' });
-});
-
-
-
-
 // get all
 router.get('/', async (req, res) => {
   try {

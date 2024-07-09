@@ -4,7 +4,7 @@ const morgan =require ('morgan')
 const bodyParser =require ('body-parser')
 const mongoose =require ('mongoose')
 const cloudinary = require('cloudinary').v2
-const fileUpload = require ("express-fileupload")
+
 
 
 app.use((req,res,next)=>{
@@ -19,7 +19,6 @@ next();
 
 // routes 
 const productRoutes= require ('./routes/product');
-const orderRoutes= require ('./routes/order');
 const userRoutes =require ('./routes/user')
 // bodyParsing
 app.use(morgan('dev'))
@@ -41,7 +40,6 @@ mongoose.connect('mongodb+srv://amoorest:' + process.env.MONGO_ATLAS_Pw +'@restf
 
 // use route
 app.use('/products', productRoutes)
-app.use('/orders', orderRoutes)
 app.use('/user',userRoutes)
 
 // browser response
